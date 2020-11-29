@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CyberpunkCountdown",
-    "slug": "CyberpunkCountdown",
+    "slug": "Cyberpunk Countdown",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,13 +17,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bobnaydenov.cyberpunkcounter"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.bobnaydenov.cyberpunkcounter"
     },
     "web": {
       "favicon": "./assets/favicon.png"
