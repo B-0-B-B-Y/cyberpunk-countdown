@@ -8,10 +8,17 @@ const win = Dimensions.get('window')
 const ratio = win.width / 1000
 
 export default function App() {
+  const [hasReleased, setHasReleased] = useState(false)
   const getTimeRemaining = () => {
     const releaseDate = DateTime.fromISO('2020-12-10T00:00')
     const timeRemaining = releaseDate.diffNow(['days', 'hours', 'minutes', 'seconds'], {}).toObject()
     const { days, hours, minutes, seconds } = timeRemaining
+
+    if (days + hours + minutes + seconds < 0) {
+      setHasReleased(true)
+      return
+    }
+
     let daysString = `${days}`.padStart(2, '0')
     let hoursString = `${hours}`.padStart(2, '0')
     let minutesString = `${minutes}`.padStart(2, '0')
@@ -19,7 +26,7 @@ export default function App() {
 
     return { days: daysString, hours: hoursString, minutes: minutesString, seconds: secondsString }
   }
-  const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining())
+  const [timeRemaining, setTimeRemaining] = useState(false)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,9 +40,19 @@ export default function App() {
     <View style={styles.container}>
       <ImageBackground style={styles.background} source={require('./assets/background.jpg')}>
         <StatusBar style="auto" />
-        <Text style={styles.time}>{`${timeRemaining.days}:${timeRemaining.hours}:${timeRemaining.minutes}:${timeRemaining.seconds}`}</Text>
+        {!hasReleased && !timeRemaining &&
+          <Text style={styles.released}>Loading...</Text>
+        }
+        {!hasReleased && timeRemaining &&
+          <Text style={styles.time}>{`${timeRemaining.days}:${timeRemaining.hours}:${timeRemaining.minutes}:${timeRemaining.seconds}`}</Text>
+        }
+        {hasReleased &&
+          <Text style={styles.released}>We have a city to burn, Samurai!</Text>
+        }
         <View style={styles.animation}>
-          <Image style={styles.image} source={require('./assets/animation.gif')} />
+          {!hasReleased &&
+            <Image style={styles.image} source={require('./assets/animation.gif')} />
+          }
         </View>
       </ImageBackground>
     </View>
@@ -53,6 +70,19 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 54,
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#f4e60c',
+    backgroundColor: '#00b8ff',
+    opacity: 0.8,
+    width: '100%',
+    marginTop: 100,
+    marginBottom:'auto',
+  },
+  released: {
+    fontSize: 30,
+    textTransform: 'uppercase',
     fontFamily: 'Roboto',
     fontWeight: 'bold',
     textAlign: 'center',
