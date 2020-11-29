@@ -12,10 +12,12 @@ export default function App() {
     const releaseDate = DateTime.fromISO('2020-12-10T00:00')
     const timeRemaining = releaseDate.diffNow(['days', 'hours', 'minutes', 'seconds'], {}).toObject()
     const { days, hours, minutes, seconds } = timeRemaining
+    let daysString = `${days}`.padStart(2, '0')
     let hoursString = `${hours}`.padStart(2, '0')
     let minutesString = `${minutes}`.padStart(2, '0')
+    let secondsString = `${Math.floor(seconds)}`.padStart(2, '0')
 
-    return { days, hours: hoursString, minutes: minutesString, seconds: Math.floor(seconds) }
+    return { days: daysString, hours: hoursString, minutes: minutesString, seconds: secondsString }
   }
   const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining())
 
